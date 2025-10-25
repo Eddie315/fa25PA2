@@ -126,7 +126,9 @@ int buildEncodingTree(int nextFree) {
     leftArr[root] = left;
     rightArr[root] = right;
     minHeap.push(root, weightArr);
+        o
 }
+
     // 1. Create a MinHeap object.
     // 2. Push all leaf node indices into the heap.
     // 3. While the heap size is greater than 1:
