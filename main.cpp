@@ -21,7 +21,6 @@ int createLeafNodes(int freq[]);
 int buildEncodingTree(int nextFree);
 void generateCodes(int root, string codes[]);
 void encodeMessage(const string& filename, string codes[]);
-int pop(int weightArr[]);
 
 int main() {
     int freq[26] = {0};
@@ -112,22 +111,29 @@ int buildEncodingTree(int nextFree) {
     //         }
     //     }
     // }
+    // creating a min heap object
     MinHeap minHeap;
+
     for (int i=0; i<nextFree; i++) {
         minHeap.push(i, weightArr);
     }
+    //while the object size is greater than 1
     while (minHeap.size > 1) {
+        // declaring left and right weight
         int left = minHeap.pop(weightArr);
         int right = minHeap.pop(weightArr);
 
-    //int root = minHeap.pop(weightArr);
-    int root = nextFree++;
-    weightArr[root] = leftArr[left] + rightArr[right];
-    leftArr[root] = left;
-    rightArr[root] = right;
-    minHeap.push(root, weightArr);
-        o
-}
+        //int root = minHeap.pop(weightArr);
+        // makes the root to be the next free slot
+        int root = nextFree++;
+        // creating the new parent with the new weights
+        weightArr[root] = weightArr[left] + weightArr[right];
+        //declaring the new pointers left and right
+        leftArr[root] = left;
+        rightArr[root] = right;
+        // push parent into the last of the remainding
+        minHeap.push(root, weightArr);
+    }
 
     // 1. Create a MinHeap object.
     // 2. Push all leaf node indices into the heap.
@@ -137,17 +143,42 @@ int buildEncodingTree(int nextFree) {
     //    - Set left/right pointers
     //    - Push new parent index back into the heap
     // 4. Return the index of the last remaining node (root)
+
+    // returns the index of the last remaining node
     int root = minHeap.pop(weightArr);
     return root; // placeholder
 }
 
 
 // Step 4: Use an STL stack to generate codes
+// using the huffman code video to shrink the size of the message being printed to a lower amohnt of bits
 void generateCodes(int root, string codes[]) {
     // TODO:
+    // using the stl provided to get the code
     stack<pair<int, string>> st;
+    st.push({root, ""});
+    // while the stack isnt empty pop the top elment
 while (!st.empty()) {
-
+    pair<int, string> p = st.top();
+    st.pop();
+    // have a current node to be the first
+    int current =p.first;
+    string code = p.second;
+    if (leftArr[current] == -1 && rightArr[current] == -1) {
+        char ch = charArr[current];
+        // shows the code in huffmans binary form
+        codes[ch - 'a'] = code;
+    }
+    else {
+        // right edge code
+        if (rightArr[current] != -1) {
+            st.push({rightArr[current], code + "1"});
+        }
+        // left edge code
+        if (leftArr[current] != -1) {
+            st.push({leftArr[current], code + "0"});
+        }
+    }
 }
 
     // Use stack<pair<int, string>> to simulate DFS traversal.
