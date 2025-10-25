@@ -21,6 +21,7 @@ int createLeafNodes(int freq[]);
 int buildEncodingTree(int nextFree);
 void generateCodes(int root, string codes[]);
 void encodeMessage(const string& filename, string codes[]);
+int pop(int weightArr[]);
 
 int main() {
     int freq[26] = {0};
@@ -90,6 +91,42 @@ int createLeafNodes(int freq[]) {
 // Step 3: Build the encoding tree using heap operations
 int buildEncodingTree(int nextFree) {
     // TODO:
+    // Min heap object easier
+    // int temp = 0;
+    // int temp2 = 0;
+    // int storage=0;
+    // for (int i=0; i<weightArr[]; i++) {
+    //     temp= leftArr[i];
+    //     if (temp < rightArr[i]) {
+    //         temp = storage;
+    //     }
+    //     if (leftArr[i] < temp) {
+    //         temp = leftArr[i];
+    //     }
+    //     for (int j=0; j<weightArr[]; i++) {
+    //         if (rightArr[j] < temp2) {
+    //             temp2 = rightArr[j];
+    //         }
+    //         if (temp > temp2) {
+    //             pop(weightArr[&temp2]);
+    //         }
+    //     }
+    // }
+    MinHeap minHeap;
+    for (int i=0; i<nextFree; i++) {
+        minHeap.push(i, weightArr);
+    }
+    while (minHeap.size > 1) {
+        int left = minHeap.pop(weightArr);
+        int right = minHeap.pop(weightArr);
+
+    //int root = minHeap.pop(weightArr);
+    int root = nextFree++;
+    weightArr[root] = leftArr[left] + rightArr[right];
+    leftArr[root] = left;
+    rightArr[root] = right;
+    minHeap.push(root, weightArr);
+}
     // 1. Create a MinHeap object.
     // 2. Push all leaf node indices into the heap.
     // 3. While the heap size is greater than 1:
@@ -98,12 +135,19 @@ int buildEncodingTree(int nextFree) {
     //    - Set left/right pointers
     //    - Push new parent index back into the heap
     // 4. Return the index of the last remaining node (root)
-    return -1; // placeholder
+    int root = minHeap.pop(weightArr);
+    return root; // placeholder
 }
+
 
 // Step 4: Use an STL stack to generate codes
 void generateCodes(int root, string codes[]) {
     // TODO:
+    stack<pair<int, string>> st;
+while (!st.empty()) {
+
+}
+
     // Use stack<pair<int, string>> to simulate DFS traversal.
     // Left edge adds '0', right edge adds '1'.
     // Record code when a leaf node is reached.
