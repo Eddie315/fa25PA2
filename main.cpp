@@ -113,11 +113,11 @@ int buildEncodingTree(int nextFree) {
     // }
     // creating a min heap object
     MinHeap minHeap;
-
+// for loop to add/ push all the chars into the tree and grab the smallest one using minhyeap
     for (int i=0; i<nextFree; i++) {
         minHeap.push(i, weightArr);
     }
-    //while the object size is greater than 1
+    //while the minheap size is greater than 1 it loops
     while (minHeap.size > 1) {
         // declaring left and right weight
         int left = minHeap.pop(weightArr);
@@ -172,10 +172,12 @@ while (!st.empty()) {
     else {
         // right edge code
         if (rightArr[current] != -1) {
+            //pushright edge adds 1
             st.push({rightArr[current], code + "1"});
         }
         // left edge code
         if (leftArr[current] != -1) {
+            // left edge adds 0
             st.push({leftArr[current], code + "0"});
         }
     }
